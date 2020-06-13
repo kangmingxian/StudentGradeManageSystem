@@ -2,6 +2,7 @@ package com.wenr.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -11,7 +12,9 @@ import javax.servlet.http.HttpSession;
 
 import com.wenr.dao.CourseDao;
 import com.wenr.dao.StudentDao;
+import com.wenr.dao.Gradedao;
 import com.wenr.model.Course;
+import com.wenr.model.Grade;
 import com.wenr.model.Student;
 
 public class AdminServlet extends HttpServlet {
@@ -81,17 +84,47 @@ public class AdminServlet extends HttpServlet {
 		} else if ("addStudent".equals(action)) {
 			Student student = new Student();
 			StudentDao studentDao = new StudentDao();
-		  	student.setSpwd(request.getParameter("spwd"));
+		  	student.setSid(Integer.parseInt(request.getParameter("sid")));
 		  	student.setSname(request.getParameter("sname"));
+		  	student.setSsex(request.getParameter("ssex"));
+		  	student.setSpwd(request.getParameter("spwd"));
 			studentDao.addStudent(student);
-			response.sendRedirect("../adminAddStudent.jsp"); 
+			response.sendRedirect("../adminAddStudent.jsp");
 		} else if ("addCourse".equals(action)) {
+			/* jz */
 			Course course = new Course();
+			course.setCid(Integer.parseInt(request.getParameter("cid")));
+			course.setCname(request.getParameter("cname"));
+			course.setTno(Integer.parseInt(request.getParameter("tno")));
 			course.setCredit(Integer.parseInt(request.getParameter("credit")));
-		  	course.setCname(request.getParameter("cname"));
+			course.setChour(Integer.parseInt(request.getParameter("chour")));
 			courseDao.addCourse(course);
 			response.sendRedirect("../adminAddCourse.jsp");
-		} 
+			/* end */
+		}
+		/* jz */
+		else if ("searchGrade".equals(action)) {
+			String s = "";
+			int sid = 0;
+			if (request.getParameter("sid") != null) {
+				s = request.getParameter("sid");
+			}
+			
+			ArrayList<Grade> list = new ArrayList<Grade>();
+			Gradedao dao = new Gradedao();
+			if ("".equals(s)) {
+				list = dao.getAllGrade();
+			} else {
+				sid = Integer.parseInt(s);
+				list = dao.getGradeBySid(sid);
+			}
+			request.setAttribute("gradeList", list);
+			request.setAttribute("course", sid);
+			// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
+			// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
+			request.getRequestDispatcher("../adminSearchGrade.jsp").forward(request, response);
+		}/* end */
+		
 	}
 
 	/**

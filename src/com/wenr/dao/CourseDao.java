@@ -1,3 +1,4 @@
+//jz
 package com.wenr.dao;
 
 import java.sql.Connection;
@@ -13,7 +14,7 @@ public class CourseDao {
 	
 	public ArrayList<Course> getAllCourse() {
 		
-		ArrayList<Course> list = new ArrayList<>();
+		ArrayList<Course> list = new ArrayList<Course>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -25,9 +26,13 @@ public class CourseDao {
 			rs = pstmt.executeQuery();
 			while (rs != null && rs.next()) {
 				Course course = new Course();
+				/* jz */
 				course.setCid(rs.getInt(1));
 				course.setCname(rs.getString(2));
-				course.setCredit(rs.getInt(3));
+				course.setTno(rs.getInt(3));
+				course.setCredit(rs.getInt(4));
+				course.setChour(rs.getInt(5));
+				/* end */
 				list.add(course);
 			}
 		} catch (SQLException ex) {
@@ -55,7 +60,7 @@ public class CourseDao {
 	// 通过课程名查询    模糊查询
 	public ArrayList<Course> getCourseByName(String cname) {
 		
-		ArrayList<Course> list = new ArrayList<>();
+		ArrayList<Course> list = new ArrayList<Course>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -68,9 +73,13 @@ public class CourseDao {
 			rs = pstmt.executeQuery();
 			while (rs != null && rs.next()) {
 				Course course = new Course();
+				/* jz */
 				course.setCid(rs.getInt(1));
 				course.setCname(rs.getString(2));
-				course.setCredit(rs.getInt(3));
+				course.setTno(rs.getInt(3));
+				course.setCredit(rs.getInt(4));
+				course.setChour(rs.getInt(5));
+				/* end */
 				list.add(course);
 			}
 		} catch (SQLException ex) {
@@ -109,9 +118,13 @@ public class CourseDao {
 			rs = pstmt.executeQuery();
 			if (rs != null && rs.next()) {
 				Course course = new Course();
+				/* jz */
 				course.setCid(rs.getInt(1));
 				course.setCname(rs.getString(2));
-				course.setCredit(rs.getInt(3));
+				course.setTno(rs.getInt(3));
+				course.setCredit(rs.getInt(4));
+				course.setChour(rs.getInt(5));
+				/* end */
 				return course;
 			}
 		} catch (SQLException ex) {
@@ -141,11 +154,16 @@ public class CourseDao {
 		PreparedStatement pstmt = null;
 		
 		try {
+			/* jz */
 			conn = DBUtil.getConnection();
-			String sql = "insert into course(cname, credit) values(?,?)";
+			String sql = "insert into course(cid, cname, t_no, credit, chour) values(?,?,?,?,?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, course.getCname());
-			pstmt.setInt(2, course.getCredit());
+			pstmt.setInt(1, course.getCid());
+			pstmt.setString(2, course.getCname());
+			pstmt.setInt(3, course.getTno());
+			pstmt.setInt(4, course.getCredit());
+			pstmt.setInt(5, course.getChour());
+			/* end */
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -165,12 +183,16 @@ public class CourseDao {
 		PreparedStatement pstmt = null;
 		
 		try {
+			/* jz */
 			conn = DBUtil.getConnection();
-			String sql = "update course set cname=?,credit=? where cid=?";
+			String sql = "update course set cname=?,t_no=?,credit=?,chour=? where cid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, course.getCname());
-			pstmt.setInt(2, course.getCredit());
-			pstmt.setInt(3, course.getCid());
+			pstmt.setInt(2, course.getTno());
+			pstmt.setInt(3, course.getCredit());
+			pstmt.setInt(4, course.getChour());
+			pstmt.setInt(5, course.getCid());
+			/* end */
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();

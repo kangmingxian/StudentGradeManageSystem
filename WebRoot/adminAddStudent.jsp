@@ -22,8 +22,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<style type="text/css">
 		body{
-			background:url(images/addCourse.jpg);
-
+			background:url(images/admin_main.jpg);
+			background-size:100% 210%;
+			margin:0;
+			padding:0;
+			background-repeat:no-repeat;
 		} 
 		p {
 			text-align:center;
@@ -52,7 +55,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<h1>添加学生</h1>
   	<form action="servlet/AdminServlet?action=addStudent" method="post">
+  		<p>学号：<input required="required" name="sid" />
   		<p>姓名：<input required="required" name="sname" />
+  		<p>性别：<input required="required" name="ssex" />
   		<p>密码：<input required="required" name="spwd" />
 		<p><input id="sub" type="submit" value="添加"></p>
   	

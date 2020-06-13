@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
 <%@ page import="com.wenr.model.*,com.wenr.dao.*" %>
-<jsp:useBean id="courseDao" class="com.wenr.dao.CourseDao" />
+<jsp:useBean id="gradedao" class="com.wenr.dao.Gradedao" />
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -11,7 +11,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>学生登录</title>
+    <title>管理员登录</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -50,23 +50,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<%
   		request.setCharacterEncoding("utf-8"); 
   		response.setContentType("text/html;charset=UTF-8");
-  		//out.print("("+request.getAttribute("course")+")");
   	%>
   
-  		<h1>查看课程</h1>
-  		<form action="servlet/StudentServlet?action=lookup" method="post">
-  			输入要查询的课程名：<input type="text" name="course" value="" />
+  		<h1>查看成绩</h1>
+  		<p><a href="teacherMain.jsp">[返回主界面]</a></p>
+  		<form action="servlet/TeacherServlet?action=searchGrade" method="post">
+  			输入要查询的学号：<input type="text" name="sid" value="" />
   			<input type="submit" value="搜索">
   		</form>
+  		
   		
   	  	<table border="1px" cellspacing="0px">
   		<tr>
   			<td>课程号</td>
   			<td>课程名</td>
-  			<td>教师号</td>
-  			<td>学分</td>
-  			<td>学时</td>
-  			<td>操作</td>
+  			<td>学号</td>
+  			<td>学生姓名</td>
+  			<td>成绩</td>
   		</tr>
   		
   		<%
@@ -77,8 +77,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			}
   			String[] color = {"white","yellow"};
   			
-  			Student student = (Student)session.getAttribute("student");
-  			ArrayList<Course> list = (ArrayList<Course>)request.getAttribute("courseList");
+  			ArrayList<Grade> list = new ArrayList<Grade>();//(ArrayList<Grade>)request.getAttribute("courseList");
+  			Object obj = request.getAttribute("gradeList");
+  			//检查是不是ArrayList
+  			if(obj instanceof ArrayList<?>)
+  			{
+  				//取出ArrayList
+  				ArrayList< ? > al = (ArrayList< ? >) obj;
+  				if (al.size() > 0) {
+  				    // 一个个转换过来.
+  				    for (int i = 0; i < al.size(); i++) {
+  				      // 还得判断是不是String
+  				      Object o = al.get(i);
+  				      if(o instanceof Grade )
+  				      {
+  				    	  list.add((Grade)o);//timeSpent是前面自己定义的ArrayList
+  				      }
+  				    }
+  			}
+  			}
+  			
   			int count = list.size();
   			int prepage = cutpage - 1;
   			int nxtpage = cutpage + 1;
@@ -87,15 +105,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			
   			if (list != null && list.size() > 0) {
   				for (int i = (cutpage-1)*cntPrePage; i < cutpage*cntPrePage && i < count; i++) {
-	  				Course course = list.get(i);
+	  				Grade grade = list.get(i);
 	  	%>
 		<tr bgcolor="<%=color[i%2] %>" >
-			<td><%=course.getCid() %></td>
-			<td><%=course.getCname() %></td>
-			<td><%=course.getTno() %></td>
-			<td><%=course.getCredit() %></td>
-			<td><%=course.getChour() %></td>
-			<td><a href="servlet/StudentServlet?action=select&cid=<%=course.getCid()%>&cutpage=<%=cutpage %>">选课</a></td>
+			<td><%=grade.getCid() %></td>
+			<td><%=grade.getCname() %></td>
+			<td><%=grade.getSid() %></td>
+			<td><%=grade.getSname() %></td>
+			<td><%=grade.getScore() %></td>
 		</tr>
 	  			
 	  	<%
@@ -103,9 +120,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  		}
   		%>
   		</table>
-  		<p><a href="servlet/StudentServlet?action=lookup&cutpage=<%=prepage%>&course=<%=request.getAttribute("course") %>">[上一页]</a>
-  			&nbsp;(<%=cutpage %>/<%=(count-1)/cntPrePage+1 %>)&nbsp;
-  			<a href="servlet/StudentServlet?action=lookup&cutpage=<%=nxtpage%>&course=<%=request.getAttribute("course") %>">[下一页]</a></p>
-  		<p><a href="studentMain.jsp">[返回主界面]</a></p>
+  		
   </body>
 </html>

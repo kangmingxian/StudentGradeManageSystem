@@ -94,8 +94,8 @@ public class StudentServlet extends HttpServlet {
 			if (request.getParameter("course") != null) {
 				courseName = request.getParameter("course");
 			}
-			courseName = courseName.trim();
-			ArrayList<Course> list = new ArrayList<>();
+			courseName = courseName.trim();//去除首位空格
+			ArrayList<Course> list = new ArrayList<Course>();
 			CourseDao dao = new CourseDao();
 			if ("".equals(courseName)) {
 				list = dao.getAllCourse();

@@ -43,10 +43,10 @@
   	
   	<div id="wel">
   		<h1>欢迎登录<br/></h1>	
-  		<p><a> <font color=red >课程信息</font></a></p>
-  		<p><a> <font color=red >成绩录入</font></a></p>
-  		<p><a> <font color=red >成绩统计</font></a></p>
-  		<p><a> <font color=red >成绩查询</font></a></p>
+  		<p><a href="teacherCourse.jsp"> <font color=red >课程信息</font></a></p>
+  		<p><a href="teacherAddScore.jsp"> <font color=red >成绩录入</font></a></p>
+  		<p><a href="teacherTongGrade.jsp"> <font color=red >成绩统计</font></a></p>
+  		<p><a href="teacherSearchGrade.jsp"> <font color=red >成绩查询</font></a></p>
   		<p><a href="servlet/LoginServlet?action=logout"><font color=red >退出登录</font></a></p>
   	</div>
   </body>

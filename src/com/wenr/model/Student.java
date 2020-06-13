@@ -1,9 +1,13 @@
+//jz
 package com.wenr.model;
 
 public class Student {
 	private int sid;		// Ñ§ºÅ
 	private String spwd;	// ÃÜÂë
 	private String sname;	// ĞÕÃû
+	/* jz */
+	private String ssex;
+	/*end*/
 	
 	public int getSid() {
 		return sid;
@@ -23,4 +27,13 @@ public class Student {
 	public void setSname(String sname) {
 		this.sname = sname;
 	}
+	
+	/* jz */
+	public String getSsex() {
+		return ssex;
+	}
+	public void setSsex(String ssex) {
+		this.ssex = ssex;
+	}
+	/* end */
 }

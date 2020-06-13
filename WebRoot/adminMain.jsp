@@ -46,7 +46,7 @@
   		<p><a href="adminSearchStudent.jsp"><font color=red >学生信息</font></a></p>
   		<p><a href="adminAddCourse.jsp"><font color=red >添加课程</font></a></p>
   		<p><a href="adminAddStudent.jsp"><font color=red >添加学生</font></a></p>
-		<p><a><font color=red >成绩查询</font></a></p>
+		<p><a href="adminSearchGrade.jsp"><font color=red >成绩查询</font></a></p>
   		<p><a href="servlet/LoginServlet?action=logout"><font color=red >退出登录</font></a></p>  		
   	</div>
   </body>

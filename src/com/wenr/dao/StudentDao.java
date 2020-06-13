@@ -18,14 +18,15 @@ public class StudentDao {
 		ResultSet rs = null;
 		
 		try {
+			/* jz */
 			conn = DBUtil.getConnection();
-			String sql = "select * from student where Studentid=? and Pwd=?";
+			String sql = "select * from student where sid=? and spwd=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, student.getSid());
 			pstmt.setString(2, student.getSpwd());
 			rs = pstmt.executeQuery();
 			if (rs != null && rs.next()) {
-				student.setSname(rs.getString("Name"));
+				student.setSname(rs.getString("sname"));
 				return true;
 			} else {
 				return false;
@@ -48,11 +49,11 @@ public class StudentDao {
 				}
 			}
 		}
-		
+		/* end */
 		return false;
 	}
 	
-	public ArrayList<Course> getSelectedCourse(Student student) {
+public ArrayList<Course> getSelectedCourse(Student student) {
 		
 		ArrayList<Course> list = new ArrayList<Course>();
 		Connection conn = null;
@@ -61,16 +62,18 @@ public class StudentDao {
 		
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select course.cid, cname, credit, score from student, course, optcou where student.sid = optcou.sid and course.cid = optcou.cid and student.sid=?";
+			String sql = "select course.cid,course.cname,course.t_no,course.credit,course.chour,score.score from course,score,student where student.sid=score.sid and student.sid=? and course.cid=score.cid;";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, student.getSid());
 			rs = pstmt.executeQuery();
 			while (rs != null && rs.next()) {
 				Course course = new Course();
 				course.setCid(rs.getInt(1));
-				course.setCname(rs.getString("cname"));
-				course.setCredit(rs.getInt("credit"));
-				course.setScore(rs.getDouble("score"));
+				course.setCname(rs.getString(2));
+				course.setTno(rs.getInt(3));
+				course.setCredit(rs.getInt(4));
+				course.setChour(rs.getInt(5));
+				course.setScore(rs.getInt(6));
 				list.add(course);
 			}
 		} catch (SQLException ex) {
@@ -97,7 +100,7 @@ public class StudentDao {
 	
 	public ArrayList<Student> getAllStudent() {
 		
-		ArrayList<Student> list = new ArrayList<>();
+		ArrayList<Student> list = new ArrayList<Student>();
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -109,9 +112,12 @@ public class StudentDao {
 			rs = pstmt.executeQuery();
 			while (rs != null && rs.next()) {
 				Student student = new Student();
+				/* jz */
 				student.setSid(rs.getInt(1));
-				student.setSpwd(rs.getString(2));
-				student.setSname(rs.getString(3));
+				student.setSname(rs.getString(2));
+				student.setSsex(rs.getString(3));
+				student.setSpwd(rs.getString(4));
+				/* end */
 				list.add(student);
 			}
 		} catch (SQLException ex) {
@@ -137,7 +143,7 @@ public class StudentDao {
 	}
 	
 
-	public boolean deleteCourse(Student student, int cid) {
+public boolean deleteCourse(Student student, int cid) {
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -145,7 +151,7 @@ public class StudentDao {
 		
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select score from optcou where sid=? and cid=? and score > 0";
+			String sql = "select score from score where sid=? and cid=? and score is not NULL;";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, student.getSid());
 			pstmt.setInt(2, cid);
@@ -156,7 +162,7 @@ public class StudentDao {
 			} else {
 				// 成绩不存在，可以删除
 				if (pstmt != null) pstmt.close();
-				sql = "delete from optcou where sid=? and cid=?";
+				sql = "delete from score where sid=? and cid=?;";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, student.getSid());
 				pstmt.setInt(2, cid);
@@ -186,7 +192,7 @@ public class StudentDao {
 		
 	}
 	
-	public boolean addCourse(Student student, int cid) {
+public boolean addCourse(Student student, int cid) {
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -194,7 +200,7 @@ public class StudentDao {
 		
 		try {
 			conn = DBUtil.getConnection();
-			String sql = "select * from optcou where sid=? and cid=?";
+			String sql = "select * from score where sid=? and cid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, student.getSid());
 			pstmt.setInt(2, cid);
@@ -204,7 +210,7 @@ public class StudentDao {
 				return false;
 			} else {
 				// 没选过 可以选择
-				sql = "insert into optcou(sid, cid) values(?, ?)";
+				sql = "insert into score(sid, cid) values(?, ?)";
 				if (pstmt != null) pstmt.close();
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, student.getSid());
@@ -239,11 +245,15 @@ public class StudentDao {
 		PreparedStatement pstmt = null;
 		
 		try {
+			/* jz */
 			conn = DBUtil.getConnection();
-			String sql = "insert into student(sname, spwd) values(?, ?)";
+			String sql = "insert into student(sid, sname, ssex, spwd) values(?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, student.getSname());
-			pstmt.setString(2, student.getSpwd());
+			pstmt.setInt(1, student.getSid());
+			pstmt.setString(2, student.getSname());
+			pstmt.setString(3, student.getSsex());
+			pstmt.setString(4, student.getSpwd());
+			/* end */
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
@@ -274,4 +284,49 @@ public class StudentDao {
 		dao.deleteCourse(student, 100000003);
 		
 	}
+	
+	public ArrayList<Student> searchGrede() {
+		
+		ArrayList<Student> list = new ArrayList<Student>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conn = DBUtil.getConnection();
+			String sql = "select * from student";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while (rs != null && rs.next()) {
+				Student student = new Student();
+				/* jz */
+				student.setSid(rs.getInt(1));
+				student.setSname(rs.getString(2));
+				student.setSsex(rs.getString(3));
+				student.setSpwd(rs.getString(4));
+				/* end */
+				list.add(student);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		return list;
+	}
+	
 }

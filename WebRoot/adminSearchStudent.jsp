@@ -53,6 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<tr>
   			<td>学号</td>
   			<td>姓名</td>
+  			<td>性别</td>
   			<td>密码</td>
   		</tr>
   		
@@ -66,6 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<tr bgcolor="<%=color[i%2] %>" >
 			<td><%=student.getSid() %></td>
 			<td><%=student.getSname() %></td>
+			<td><%=student.getSsex() %></td>
 			<td><%=student.getSpwd() %></td>
 		</tr>
 	  			

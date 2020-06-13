@@ -53,7 +53,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		<tr>
   			<td>课程号</td>
   			<td>课程名</td>
+  			<td>老师</td>
   			<td>学分</td>
+  			<td>学时</td>
   			<td>更新</td>
   			<td>删除</td>
   		</tr>
@@ -80,7 +82,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<tr bgcolor="<%=color[i%2] %>" >
 			<td><%=course.getCid() %></td>
 			<td><%=course.getCname() %></td>
+			<td><%=course.getTno() %></td>
 			<td><%=course.getCredit() %></td>
+			<td><%=course.getChour() %></td>
 			<td><a href="adminUpdateCourse.jsp?cid=<%=course.getCid() %>">更新</a></td>
 			<td><a href="servlet/AdminServlet?action=delete&cid=<%=course.getCid() %>">删除</a></td>
 		</tr>

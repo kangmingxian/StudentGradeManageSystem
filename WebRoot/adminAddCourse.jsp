@@ -56,8 +56,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<h1>添加课程</h1>
   	<form action="servlet/AdminServlet?action=addCourse" method="post">
-  		<p><span>课程名：</span><input required="required" name="cname" />
-			学&nbsp;分：
+  		<p>
+  		<span>课程号：</span><input required="required" name="cid" /> <br>
+  		<span>课程名：</span><input required="required" name="cname" /><br>
+  		<span>教师名：</span><input required="required" name="tno" /><br>
+		<span>学&nbsp;分：</span>
 			<select name="credit">
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -70,6 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<option value="9">9</option>
 				<option value="10">10</option>
 			</select>
+		<span>学时：</span><input required="required" name="chour" /><br>
 		</p>
 		<p><input id="sub" type="submit" value="添加"></p>
   	</form>
