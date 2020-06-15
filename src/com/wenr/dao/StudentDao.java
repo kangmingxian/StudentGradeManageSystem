@@ -240,10 +240,10 @@ public boolean addCourse(Student student, int cid) {
 		return false;
 	}
 	
-	public void addStudent(Student student) {
+	public int addStudent(Student student) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
+		int rs = 0;
 		try {
 			/* jz */
 			conn = DBUtil.getConnection();
@@ -254,7 +254,8 @@ public boolean addCourse(Student student, int cid) {
 			pstmt.setString(3, student.getSsex());
 			pstmt.setString(4, student.getSpwd());
 			/* end */
-			pstmt.executeUpdate();
+			rs=pstmt.executeUpdate();
+			return rs;
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -266,6 +267,7 @@ public boolean addCourse(Student student, int cid) {
 				}
 			}
 		}
+		return rs;
 	}
 	
 	public static void main(String[] args) {

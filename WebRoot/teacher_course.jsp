@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
-<%@ page import="com.wenr.model.*,com.wenr.dao.StudentDao" %>
-<jsp:useBean id="studentDao" class="com.wenr.dao.StudentDao" />
+<%@ page import="com.wenr.model.*,com.wenr.dao.TeacherDao" %>
+<jsp:useBean id="TeacherDao" class="com.wenr.dao.TeacherDao" />
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<style type="text/css">
 		body {
-			background: url(images/student_selected.jpg);
+			background:url(images/student_selected_course.jpg);
 		}
 		table {
 			border-collapse:collapse;
@@ -47,32 +47,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     	
-  	<h1>已选课程</h1>
+  	<h1>课程信息</h1>
   
   	<table border="1px" cellspacing="0px">
   		<tr>
   			<td>课程号</td>
   			<td>课程名</td>
-  			<td>教师号</td>
   			<td>学分</td>
   			<td>学时</td>
-  			<td>操作</td>
   		</tr>
   		
   		<%
   			String[] color = {"yellow", "green"};
-  			Student student = (Student)session.getAttribute("student");
-  			ArrayList<Course> list = studentDao.getSelectedCourse(student);
+  			Teacher teacher = (Teacher)session.getAttribute("teacher");
+  			ArrayList<Course> list = TeacherDao.get_teacher_Course(teacher);
   			for (int i = 0; i < list.size(); i++) {
   				Course course = list.get(i);
   		%>
   			<tr bgcolor="<%=color[i%2] %>" >
 				<td><%=course.getCid() %></td>
 				<td><%=course.getCname() %></td>
-				<td><%=course.getTno() %></td>
 				<td><%=course.getCredit() %></td>
 				<td><%=course.getChour() %></td>
-	  			<td><a href="servlet/StudentServlet?action=delete&cid=<%=course.getCid() %>">删除</a></td>
   			</tr>
   			
   		<%
@@ -80,7 +76,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		%>
   		
   	</table>
-  	<p><a href="studentMain.jsp">[返回主界面]</a></p>
+  	<p><a href="teacherMain.jsp">[返回主界面]</a></p>
   	
   </body>
 </html>

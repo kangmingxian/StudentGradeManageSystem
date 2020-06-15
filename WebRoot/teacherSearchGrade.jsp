@@ -24,12 +24,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<style type="text/css">
 		body {
 			background:url(images/student_selected_course.jpg);
-			background-size:100% 210%;
-			margin:0;
-			padding:0;
-			background-repeat:no-repeat;
 		}
-		h1,form {
+		h1 {
+			margin-top:100px;
+			text-align:center;
+		}
+		form {
 			text-align:center;
 		}
 		table {

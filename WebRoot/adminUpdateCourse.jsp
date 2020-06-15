@@ -23,7 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<style type="text/css">
 		body {
-			background:url(images/updateCourse.jpg);
+			background:url(images/admin_main.jpg);
+		}
+		h1 {
+			margin-top:100px;
+			text-align:center;
 		}
 		form {
 			text-align:center;
@@ -31,11 +35,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			width:400px;
 			border:1px solid #000;
 		}
+		p {
+			text-align:center;
+		}
 	</style> 
 
   </head>
   
   <body>
+  	<h1>课程更新</h1>
   	<%
   		request.setCharacterEncoding("utf-8"); 
   		response.setContentType("text/html;charset=UTF-8");
@@ -43,10 +51,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		Course course = courseDao.getCourseById(cid);
   	 %>
   	<form action="servlet/AdminServlet?action=update&cid=<%=cid %>" method="post">
-  		<p><label>课程号： <%=cid %></label></p>
-  		<p><label>课程名：</label>
+  	<br>
+  		<span><label>课程号： &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=cid %></label></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  		<br><br>
+  		
+  		<span><label>课程名：</label></span>
   		<input type="text" name="cname" value="<%=course.getCname() %>"></p>
-  		<p><label>学&nbsp;分：</label>
+  		
+  		<span><label>学&nbsp;&nbsp;&nbsp;&nbsp;分：</label>
   		<select name="credit" >
 				<option <%=(1==course.getCredit())?"selected":"" %> value="1">1</option>
 				<option <%=(2==course.getCredit())?"selected":"" %> value="2">2</option>
@@ -58,10 +71,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<option <%=(8==course.getCredit())?"selected":"" %> value="8">8</option>
 				<option <%=(9==course.getCredit())?"selected":"" %> value="9">9</option>
 				<option <%=(10==course.getCredit())?"selected":"" %> value="10">10</option>
-			</select>
-  		</p>
+			</select></span>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
   		<p><input type="submit" value="更新"></p>
   	</form>
      
+  <p><a href="adminMain.jsp">[返回主界面]</a></p>
   </body>
 </html>

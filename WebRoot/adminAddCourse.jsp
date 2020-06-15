@@ -22,8 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<style type="text/css">
 		body{
-			background:url(images/addCourse.jpg);
-
+			background:url(images/admin_main.jpg);
 		} 
 		p {
 			text-align:center;
@@ -57,10 +56,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<h1>添加课程</h1>
   	<form action="servlet/AdminServlet?action=addCourse" method="post">
   		<p>
-  		<span>课程号：</span><input required="required" name="cid" /> <br>
-  		<span>课程名：</span><input required="required" name="cname" /><br>
-  		<span>教师名：</span><input required="required" name="tno" /><br>
-		<span>学&nbsp;分：</span>
+  		<span>课程号：</span><input required="required" name="cid" /> <br><br>
+  		<span>课程名：</span><input required="required" name="cname" /><br><br>
+  		<span>教师号：</span><input required="required" name="tno" /><br><br>
+		<span>学&nbsp;&nbsp;&nbsp;分：</span>
 			<select name="credit">
 				<option value="1">1</option>
 				<option value="2">2</option>
@@ -68,13 +67,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<option value="4">4</option>
 				<option value="5">5</option>
 				<option value="6">6</option>
-				<option value="7">7</option>
-				<option value="8">8</option>
-				<option value="9">9</option>
-				<option value="10">10</option>
-			</select>
-		<span>学时：</span><input required="required" name="chour" /><br>
+			</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<br><br>
+		<span>学&nbsp;&nbsp;&nbsp;时：</span><input required="required" name="chour" /><br>
 		</p>
+		
 		<p><input id="sub" type="submit" value="添加"></p>
   	</form>
   	<p><a href="adminMain.jsp">[返回主界面]</a></p>

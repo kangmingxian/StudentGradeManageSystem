@@ -23,9 +23,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<style type="text/css">
 		body {
-			background:url(images/searchCourse.jpg);
+			background:url(images/admin_main.jpg);
 		}
-		h1,form {
+		h1 {
+			margin-top:100px;
+			text-align:center;
+		}
+		form {
 			text-align:center;
 		}
 		table {

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.wenr.dao.Gradedao;
 import com.wenr.model.Grade;
-
+import java.util.regex.Pattern;
 /**
  * Servlet implementation class TeacherServlet
  */
@@ -28,7 +28,16 @@ loadOnStartup = 1 //启动项
 
 public class TeacherServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	/*判断非负数*/
+	public static boolean isint(String str){
+	    Pattern pattern = Pattern.compile("^[+]?[0-9]+");
+	    return pattern.matcher(str).matches();  
+	}
+	/*判断0-100间的小数*/
+	public static boolean isdouble(String str){
+	    Pattern pattern = Pattern.compile("^[+]?[0-9]+[.][0-9]+");
+	    return (pattern.matcher(str).matches()||isint(str))&&(Double.parseDouble(str)>=0&&Double.parseDouble(str)<=100);  
+	}
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -84,7 +93,7 @@ public class TeacherServlet extends HttpServlet {
 		}
 		else if ("add_score".equals(action)) {
 			// 添加成绩
-			if(!request.getParameter("score1").isEmpty())
+			if(!request.getParameter("score1").isEmpty()&&isint(request.getParameter("sid"))&&isint(request.getParameter("cid"))&&isdouble(request.getParameter("score1")))
 			{
 				grade.teacher_add_score(Integer.parseInt(request.getParameter("sid")), Integer.parseInt(request.getParameter("cid")), Double.parseDouble(request.getParameter("score1")));
 			}

@@ -24,11 +24,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<style type="text/css">
 		body {
 			background: url(images/student_selected.jpg);
-			text-align:center;
-			background-size:100% 370%;
-			margin:0;
-			padding:0;
-			background-repeat:no-repeat;
 		}
 		table {
 			border-collapse:collapse;
@@ -37,6 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			font-size:1.2em;
 		}
 		h1 {
+			margin-top:100px;
 			text-align:center;
 		}
 

@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8"%>
-<%@ page import="com.wenr.model.*,com.wenr.dao.StudentDao" %>
-<jsp:useBean id="studentDao" class="com.wenr.dao.StudentDao" />
+<%@ page import="com.wenr.model.*,com.wenr.dao.Gradedao" %>
+<jsp:useBean id="Gradedao" class="com.wenr.dao.Gradedao" />
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,7 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
 	<style type="text/css">
 		body {
-			background: url(images/student_selected.jpg);
+			background:url(images/student_selected_course.jpg);
 		}
 		table {
 			border-collapse:collapse;
@@ -47,40 +47,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body>
     	
-  	<h1>已选课程</h1>
+  	<h1>成绩录入</h1>
   
   	<table border="1px" cellspacing="0px">
   		<tr>
   			<td>课程号</td>
   			<td>课程名</td>
-  			<td>教师号</td>
-  			<td>学分</td>
-  			<td>学时</td>
+  			<td>学生号</td>
+  			<td>学生名</td>
+  			<td>现在的成绩</td>
+  			<td>更改的成绩</td>
   			<td>操作</td>
   		</tr>
   		
   		<%
   			String[] color = {"yellow", "green"};
-  			Student student = (Student)session.getAttribute("student");
-  			ArrayList<Course> list = studentDao.getSelectedCourse(student);
+  			Teacher teacher = (Teacher)session.getAttribute("teacher");
+  			ArrayList<Grade> list = Gradedao.show_all_score((teacher.getTid()));
   			for (int i = 0; i < list.size(); i++) {
-  				Course course = list.get(i);
+  				Grade t= list.get(i);
   		%>
+  		<form action="servlet/StudentServlet?action=add_score&cid=<%=t.getCid()%>&sid=<%=t.getSid() %>" method="post">
   			<tr bgcolor="<%=color[i%2] %>" >
-				<td><%=course.getCid() %></td>
-				<td><%=course.getCname() %></td>
-				<td><%=course.getTno() %></td>
-				<td><%=course.getCredit() %></td>
-				<td><%=course.getChour() %></td>
-	  			<td><a href="servlet/StudentServlet?action=delete&cid=<%=course.getCid() %>">删除</a></td>
+				<td><%=t.getCid() %></td>
+				<td><%=t.getCname() %></td>
+				<td><%=t.getSid() %></td>
+				<td><%=t.getSname() %></td>
+				<td><%=t.getScore() %></td>
+	
+	
+				<td><input  id="x" name="score1" /></td>
+
+				<td><input id="sub" type="submit" value="确认" > </td>
+				
   			</tr>
-  			
+  		</form>
   		<%
   			}
   		%>
   		
   	</table>
-  	<p><a href="studentMain.jsp">[返回主界面]</a></p>
+  	<p><a href="teacherMain.jsp">[返回主界面]</a></p>
   	
   </body>
 </html>

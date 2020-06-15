@@ -149,10 +149,10 @@ public class CourseDao {
 		return null;
 	}
 	
-	public void addCourse(Course course) {
+	public int addCourse(Course course) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
+		int rs = 0;
 		try {
 			/* jz */
 			conn = DBUtil.getConnection();
@@ -164,7 +164,7 @@ public class CourseDao {
 			pstmt.setInt(4, course.getCredit());
 			pstmt.setInt(5, course.getChour());
 			/* end */
-			pstmt.executeUpdate();
+			rs = pstmt.executeUpdate();
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 		} finally {
@@ -176,6 +176,7 @@ public class CourseDao {
 				}
 			}
 		}
+		return rs;
 	}
 	
 	public void updateCourse(Course course) {

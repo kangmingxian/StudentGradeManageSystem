@@ -14,9 +14,18 @@ import com.wenr.dao.CourseDao;
 import com.wenr.model.Course;
 import com.wenr.dao.StudentDao;
 import com.wenr.model.Student;
-
+import java.util.regex.Pattern;
 public class StudentServlet extends HttpServlet {
-
+	/*判断非负数*/
+	public static boolean isint(String str){
+	    Pattern pattern = Pattern.compile("^[+]?[0-9]+");
+	    return pattern.matcher(str).matches();  
+	}
+	/*判断0-100间的小数*/
+	public static boolean isdouble(String str){
+	    Pattern pattern = Pattern.compile("^[+]?[0-9]+[.][0-9]+");
+	    return (pattern.matcher(str).matches()||isint(str))&&(Double.parseDouble(str)>=0&&Double.parseDouble(str)<=100);  
+	}
 	/**
 		 * Constructor of the object.
 		 */

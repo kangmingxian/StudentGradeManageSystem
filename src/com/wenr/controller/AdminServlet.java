@@ -16,9 +16,14 @@ import com.wenr.dao.Gradedao;
 import com.wenr.model.Course;
 import com.wenr.model.Grade;
 import com.wenr.model.Student;
+import java.util.regex.Pattern;
 
 public class AdminServlet extends HttpServlet {
-
+	/*判断非负数*/
+	public static boolean isInt(String str){
+		    Pattern pattern = Pattern.compile("^[+]?[0-9]+");
+		    return pattern.matcher(str).matches();  
+		}
 	/**
 		 * Constructor of the object.
 		 */
@@ -71,35 +76,65 @@ public class AdminServlet extends HttpServlet {
 		
 		if ("delete".equals(action)) {
 			// 删除课程
-			courseDao.deleteCourseById(Integer.parseInt(request.getParameter("cid")));
+			if(isInt(request.getParameter("cid")))
+			{
+				courseDao.deleteCourseById(Integer.parseInt(request.getParameter("cid")));
+			}
 	  		response.sendRedirect("../adminSearchCourse.jsp");
 		} else if ("update".equals(action)) {
 			// 更新课程
 			Course course = new Course();
-			course.setCid(Integer.parseInt(request.getParameter("cid")));
-			course.setCname(request.getParameter("cname"));
-			course.setCredit(Integer.parseInt(request.getParameter("credit")));
-			courseDao.updateCourse(course);
+			if(isInt(request.getParameter("cid"))&&isInt(request.getParameter("credit")))
+			{
+				course.setCid(Integer.parseInt(request.getParameter("cid")));
+				course.setCname(request.getParameter("cname"));
+				course.setCredit(Integer.parseInt(request.getParameter("credit")));
+				courseDao.updateCourse(course);
+			}
 	  		response.sendRedirect("../adminSearchCourse.jsp");
 		} else if ("addStudent".equals(action)) {
 			Student student = new Student();
 			StudentDao studentDao = new StudentDao();
-		  	student.setSid(Integer.parseInt(request.getParameter("sid")));
-		  	student.setSname(request.getParameter("sname"));
-		  	student.setSsex(request.getParameter("ssex"));
-		  	student.setSpwd(request.getParameter("spwd"));
-			studentDao.addStudent(student);
-			response.sendRedirect("../adminAddStudent.jsp");
+			int rs = 0;
+			if(isInt(request.getParameter("sid")))
+			{
+			  	student.setSid(Integer.parseInt(request.getParameter("sid")));
+			  	student.setSname(request.getParameter("sname"));
+			  	student.setSsex(request.getParameter("ssex"));
+			  	student.setSpwd(request.getParameter("spwd"));
+				rs = studentDao.addStudent(student);;
+				if(rs != 0)
+				{
+					out.print("<script>alert('添加成功'); window.location='../adminAddStudent.jsp' </script>");
+				}
+				else
+					out.print("<script>alert('添加失败，请检查'); window.location='../adminAddStudent.jsp' </script>");	
+			}
+			else
+			{
+				out.print("<script>alert('学号错误，请检查'); window.location='../adminAddStudent.jsp' </script>");
+			}
 		} else if ("addCourse".equals(action)) {
 			/* jz */
 			Course course = new Course();
-			course.setCid(Integer.parseInt(request.getParameter("cid")));
-			course.setCname(request.getParameter("cname"));
-			course.setTno(Integer.parseInt(request.getParameter("tno")));
-			course.setCredit(Integer.parseInt(request.getParameter("credit")));
-			course.setChour(Integer.parseInt(request.getParameter("chour")));
-			courseDao.addCourse(course);
-			response.sendRedirect("../adminAddCourse.jsp");
+			int rs = 0;
+			if(isInt(request.getParameter("cid"))&&isInt(request.getParameter("tno"))&&isInt(request.getParameter("credit"))&&isInt(request.getParameter("chour")))
+			{
+				course.setCid(Integer.parseInt(request.getParameter("cid")));
+				course.setCname(request.getParameter("cname"));
+				course.setTno(Integer.parseInt(request.getParameter("tno")));
+				course.setCredit(Integer.parseInt(request.getParameter("credit")));
+				course.setChour(Integer.parseInt(request.getParameter("chour")));
+				
+				rs = courseDao.addCourse(course);
+				if(rs != 0)
+				{
+					out.print("<script>alert('添加成功'); window.location='../adminAddCourse.jsp' </script>");
+				}
+				else
+					out.print("<script>alert('添加失败，请检查'); window.location='../adminAddCourse.jsp' </script>");
+				
+			}
 			/* end */
 		}
 		/* jz */
@@ -123,7 +158,8 @@ public class AdminServlet extends HttpServlet {
 			// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
 			// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
 			request.getRequestDispatcher("../adminSearchGrade.jsp").forward(request, response);
-		}/* end */
+		}
+			/* end */
 		
 	}
 
