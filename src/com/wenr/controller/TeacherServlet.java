@@ -82,22 +82,38 @@ public class TeacherServlet extends HttpServlet {
 			if ("".equals(s)) {
 				list = dao.getAllGrade();
 			} else {
-				sid = Integer.parseInt(s);
-				list = dao.getGradeBySid(sid);
+				if(isint(s))
+				{
+					sid = Integer.parseInt(s);
+					list = dao.getGradeBySid(sid);
+				}
 			}
-			request.setAttribute("gradeList", list);
-			request.setAttribute("course", sid);
-			// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
-			// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
-			request.getRequestDispatcher("../teacherSearchGrade.jsp").forward(request, response);
+			if(!list.isEmpty())
+			{
+				request.setAttribute("gradeList", list);
+				request.setAttribute("course", sid);
+				// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
+				// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
+				request.getRequestDispatcher("../teacherSearchGrade.jsp").forward(request, response);
+			}
+			else
+			{
+				out.print("<script>alert('查询不到任何成绩，请检查输入的学生学号'); window.location='../teacherSearchGrade.jsp' </script>");
+			}
+			
 		}
 		else if ("add_score".equals(action)) {
 			// 添加成绩
 			if(!request.getParameter("score1").isEmpty()&&isint(request.getParameter("sid"))&&isint(request.getParameter("cid"))&&isdouble(request.getParameter("score1")))
 			{
 				grade.teacher_add_score(Integer.parseInt(request.getParameter("sid")), Integer.parseInt(request.getParameter("cid")), Double.parseDouble(request.getParameter("score1")));
+		  		response.sendRedirect("../teacherAddScore.jsp");
 			}
-	  		response.sendRedirect("../teacherAddScore.jsp");
+			else
+			{
+				out.print("<script>alert('输入成绩的格式有误，请检查后重新输入'); window.location='../teacherAddScore.jsp' </script>");
+			}
+
 			}
 		
 		

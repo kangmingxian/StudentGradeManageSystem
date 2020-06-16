@@ -186,13 +186,11 @@ public class CourseDao {
 		try {
 			/* jz */
 			conn = DBUtil.getConnection();
-			String sql = "update course set cname=?,t_no=?,credit=?,chour=? where cid=?";
+			String sql = "update course set cname=?,credit=? where cid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, course.getCname());
-			pstmt.setInt(2, course.getTno());
-			pstmt.setInt(3, course.getCredit());
-			pstmt.setInt(4, course.getChour());
-			pstmt.setInt(5, course.getCid());
+			pstmt.setInt(2, course.getCredit());
+			pstmt.setInt(3, course.getCid());
 			/* end */
 			pstmt.executeUpdate();
 		} catch (SQLException ex) {

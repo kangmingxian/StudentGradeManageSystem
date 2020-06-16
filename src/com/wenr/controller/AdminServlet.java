@@ -80,7 +80,8 @@ public class AdminServlet extends HttpServlet {
 			{
 				courseDao.deleteCourseById(Integer.parseInt(request.getParameter("cid")));
 			}
-	  		response.sendRedirect("../adminSearchCourse.jsp");
+	  		out.print("<script>alert('删除成功'); window.location='../adminSearchCourse.jsp' </script>");
+	  		
 		} else if ("update".equals(action)) {
 			// 更新课程
 			Course course = new Course();
@@ -135,6 +136,9 @@ public class AdminServlet extends HttpServlet {
 					out.print("<script>alert('添加失败，请检查'); window.location='../adminAddCourse.jsp' </script>");
 				
 			}
+			else {
+				out.print("<script>alert('添加失败，请检查'); window.location='../adminAddCourse.jsp' </script>");
+			}
 			/* end */
 		}
 		/* jz */
@@ -150,14 +154,26 @@ public class AdminServlet extends HttpServlet {
 			if ("".equals(s)) {
 				list = dao.getAllGrade();
 			} else {
-				sid = Integer.parseInt(s);
-				list = dao.getGradeBySid(sid);
+				if(isInt(s))
+				{
+					sid = Integer.parseInt(s);
+					list = dao.getGradeBySid(sid);
+				}
+
 			}
-			request.setAttribute("gradeList", list);
-			request.setAttribute("course", sid);
-			// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
-			// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
-			request.getRequestDispatcher("../adminSearchGrade.jsp").forward(request, response);
+			if(!list.isEmpty())
+			{
+				request.setAttribute("gradeList", list);
+				request.setAttribute("course", sid);
+				// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
+				// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
+				request.getRequestDispatcher("../adminSearchGrade.jsp").forward(request, response);
+			}
+			else
+			{
+				out.print("<script>alert('该学号查不到成绩'); window.location='../adminSearchGrade.jsp' </script>");
+			}
+
 		}
 			/* end */
 		

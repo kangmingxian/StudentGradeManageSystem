@@ -111,11 +111,19 @@ public class StudentServlet extends HttpServlet {
 			} else {
 				list = dao.getCourseByName(courseName);
 			}
-			request.setAttribute("courseList", list);
-			request.setAttribute("course", courseName);
-			// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
-			// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
-			request.getRequestDispatcher("../studentSearchCourse.jsp").forward(request, response);
+			if(!list.isEmpty())
+			{
+				request.setAttribute("courseList", list);
+				request.setAttribute("course", courseName);
+				// 这里本来想用response.sendRedirect(location); 蓝儿发现并不可以传递值
+				// 请求转发就是到另一个页面去处理  所以这里就是请求转发比较合适（我猜……
+				request.getRequestDispatcher("../studentSearchCourse.jsp").forward(request, response);
+			}
+			else
+			{
+				out.print("<script>alert('无对应课程或课程号格式有误，请检查后重新输入'); window.location='StudentServlet?action=lookup' </script>");
+			}
+
 		}
 		
 		else if ("select".equals(action)) {
